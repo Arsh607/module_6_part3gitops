@@ -16,7 +16,7 @@ spec:
         - name: ghcr-creds
       containers:
         - name: transactions
-          image: ghcr.io/arsh607/module_6_part3-transactions:d33b9f15bd6f67a4c1378f91782efcce812bcacc
+          image: ghcr.io/arsh607/module_6_part3-transactions:bcfb2075e8e75110d03af4c819b75b28405a08e3
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 7000
