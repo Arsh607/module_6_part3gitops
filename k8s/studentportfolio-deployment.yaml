@@ -12,10 +12,12 @@ spec:
       labels:
         app: studentportfolio
     spec:
+      imagePullSecrets:
+        - name: ghcr-creds
       containers:
         - name: studentportfolio
           image: ghcr.io/arsh607/module_6_part3-studentportfolio:d33b9f15bd6f67a4c1378f91782efcce812bcacc
-          imagePullPolicy: Never
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80
               name: http
