@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: transactions
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: transactions
+  template:
+    metadata:
+      labels:
+        app: transactions
+    spec:
+      containers:
+        - name: transactions
+          image: ghcr.io/arsh607/module_6_part3-transactions:2eea6262653c26905b717912ef02834f296d3391
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 7000
+              name: http
+          env:
+            - name: MONGO_URI
+              value: mongodb://mongo:27017/bank_app
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
+          readinessProbe:
+            tcpSocket:
+              port: 7000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          livenessProbe:
+            tcpSocket:
+              port: 7000
+            initialDelaySeconds: 20
+            periodSeconds: 10

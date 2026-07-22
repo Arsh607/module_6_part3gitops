@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+
+spec:
+  replicas: 3
+
+  selector:
+    matchLabels:
+      app: backend
+
+  template:
+    metadata:
+      labels:
+        app: backend
+
+    spec:
+      imagePullSecrets:
+        - name: ghcr-creds
+
+      containers:
+        - name: backend
+          image: ghcr.io/arsh607/module_6_part3-backend:2eea6262653c26905b717912ef02834f296d3391
+          imagePullPolicy: IfNotPresent
+
+          ports:
+            - containerPort: 5000
+              name: http
+
+          env:
+            - name: MONGO_URI
+              value: mongodb://mongo:27017/bank_app
+
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: backend-secret
+                  key: SECRET_KEY
+
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
+
+          readinessProbe:
+            tcpSocket:
+              port: 5000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+
+          livenessProbe:
+            tcpSocket:
+              port: 5000
+            initialDelaySeconds: 20
+            periodSeconds: 10
